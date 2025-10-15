@@ -1,37 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] float moveForce = 10f;
-    float maxSpeed;
-    float jumpForce;
-
-    Rigidbody rb;
-
-    private void Awake()
-    {
-        
-    }
-
-    private void Start()
-    {
-        
-    }
-
-    private void FixedUpdate()
-    {
-        
-    }
+    [SerializeField] float moveSpeed = 10f;
 
     private void Update()
     {
-        transform.Translate(1f * Time.deltaTime, 0f, 0f);
+        MovePlayer();
     }
 
-    private void LateUpdate()
+    void MovePlayer()
     {
-        
+        float xValue = Input.GetAxis("Horizontal") * Time.deltaTime * moveSpeed;
+        float zValue = Input.GetAxis("Vertical") * Time.deltaTime * moveSpeed;
+
+        transform.Translate(xValue, 0, zValue);
     }
 }
