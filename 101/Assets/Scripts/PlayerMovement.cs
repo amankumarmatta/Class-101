@@ -1,41 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
-
-    [SerializeField] float moveForce;
-    [SerializeField] float maxSpeed;
-
-    private Rigidbody rb;
-
-    private void Start()
+  [SerializeField] float moveForce;
+  [SerializeField] float jumpForce;
+  private Rigidbody rb;
+  private void Start()
+  {
+    rb = GetComponent<Rigidbody>();
+    rb.freezeRotation = true;
+  }
+  void FixedUpdate()
+  {
+    Movement();
+    Jump();
+  }
+  void Movement()
+  {
+    float xValue = Input.GetAxis("Horizontal");
+    float zValue = Input.GetAxis("Vertical");
+    Vector3 movePos = new Vector3(xValue, 0, zValue).normalized;
+    rb.MovePosition(rb.position + movePos * moveForce * Time.fixedDeltaTime);
+  }
+  void Jump()
+  {
+    if (Input.GetKeyDown(KeyCode.Space))
     {
-        rb = GetComponent<Rigidbody>();
+      Debug.Log("Jump");
+      rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
-
-
-    void FixedUpdate()
-    {
-        Movement();
-    }
-
-
-    void Movement()
-    {
-        float xValue = Input.GetAxis("Horizontal");
-        float zValue = Input.GetAxis("Vertical");
-
-        Vector3 moveDir = (transform.forward * zValue + transform.right * xValue).normalized;
-
-        rb.AddForce(moveDir * moveForce, ForceMode.Force);
-
-        Debug.Log(moveForce);
-
-        if (rb.velocity.magnitude > maxSpeed)
-        {
-            rb.velocity = rb.velocity.normalized * maxSpeed;
-        }
-    }
+  }
 }

@@ -5,9 +5,17 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 
-    public void Play()
+  [SerializeField] private Button playButton, quitButton;
+
+  void Start()
+  {
+    playButton.onClick.AddListener(Play);
+    quitButton.onClick.AddListener(Quit);
+  }
+
+  public void Play()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Level 1");
     }
 
     public void Quit()
